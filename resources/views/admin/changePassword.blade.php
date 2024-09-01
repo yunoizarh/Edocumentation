@@ -4,7 +4,7 @@
 <head>
 
     <!-- Title -->
-    <title>Admin Login</title>
+    <title>Admin Change Password</title>
 
     <!-- Meta -->
     <meta charset="utf-8">
@@ -34,33 +34,24 @@
                         <div class="row no-gutters">
                             <div class="col-xl-12">
                                 <div class="auth-form">
-                                    <div class="text-center mb-3">
-                                        <a href="index.html"><img src="images/logo-full.png" alt=""></a>
-                                    </div>
-
-                                    @if(session('error'))
-                                    <div class="alert alert-danger" role="alert">
-                                        {{session('error')}}
-                                    </div>
-                                    @endif
-
-                                    <h4 class="text-center mb-4 fs-3">Welcome Admin</h4>
-                                    <form action="{{ route('admin.login') }}" method="POST">
+                                    <h4 class="text-center mb-4 fs-3">Admin Change Your Password</h4>
+                                    <form action="{{ route('admin.change-password') }}" method="POST">
                                         @csrf
-                                        <div class="form-group fs-5">
-                                            <label class="form-label">Email</label>
-                                            <input type="email" name="email" class="form-control" placeholder="hello@gmail.com">
+                                        <div class="form-group">
+                                            <label for="current_password">Current Password</label>
+                                            <input type="password" name="current_password" class="form-control" required>
                                         </div>
-                                        <label class="form-label fs-5">Password</label>
-                                        <div class="mb-3 position-relative fs-5">
-                                            <input type="password" name="password" id="dz-password" class="form-control" placeholder="123456">
-                                            <span class="show-pass eye">
-                                                <i class="fa fa-eye-slash"></i>
-                                                <i class="fa fa-eye"></i>
-                                            </span>
+                                        <div class="form-group">
+                                            <label for="new_password">New Password</label>
+                                            <input type="password" name="new_password" class="form-control" required>
                                         </div>
+                                        <div class="form-group">
+                                            <label for="new_password_confirmation">Confirm New Password</label>
+                                            <input type="password" name="new_password_confirmation" class="form-control" required>
+                                        </div>
+
                                         <div class="text-center">
-                                            <button type="submit" class="btn btn-primary btn-block">Sign Me In</button>
+                                            <button type="submit" class="btn btn-primary">Change Password</button>
                                         </div>
                                     </form>
                                 </div>

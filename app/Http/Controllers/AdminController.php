@@ -3,34 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Admin;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use DB;
 
 class AdminController extends Controller
 {
-    public function showLoginForm()
-    {
-        return view('admin.login');
-    }
 
-    public function login(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
-        $admin = Admin::where('email', $request->email)->first();
-
-        if ($admin && Hash::check($request->password, $admin->password)) {
-            Auth::guard('admin')->login($admin);
-            return redirect()->route('admin.dashboard');
-        } else {
-            return back()->withErrors(['email' => 'Invalid credentials'])->withInput();
-        }
-    }
 
     public function dashboard()
     {
@@ -66,11 +45,7 @@ class AdminController extends Controller
         return view('admin.dashboard', compact('recentlySubmitted'));
     }
 
-    public function logout()
-    {
-        Auth::guard('admin')->logout();
-        return redirect()->route('admin.login');
-    }
+
 
     public function manage_staff()
     {
@@ -90,6 +65,8 @@ class AdminController extends Controller
         return view('admin.manageStaff', compact('depts', 'staffs', 'faculties'));
     }
 
+
+
     public function Add_staff(Request $request)
     {
         DB::table('admins')
@@ -105,6 +82,8 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Staff Added Successfully');
     }
 
+
+
     public function assign_faculty_to_staff(Request $request)
     {
         DB::table('admins')
@@ -116,6 +95,8 @@ class AdminController extends Controller
 
         return response()->json(["status" => "successful"]);
     }
+
+
 
     public function De_assign_faculty(Request $request)
     {
@@ -129,6 +110,7 @@ class AdminController extends Controller
         return response()->json(['status' => 'successful']);
     }
 
+
     public function manage_students()
     {
         $students = DB::table('users')
@@ -138,6 +120,8 @@ class AdminController extends Controller
 
         return view('admin.manageStudents', compact('students'));
     }
+
+
 
     public function view_students_documents(Request $request)
     {

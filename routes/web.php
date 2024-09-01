@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StudentDocuments;
+use App\Http\Controllers\AdminAuth;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\studentFilesController;
 
@@ -19,12 +20,12 @@ Route::post('/final_submission', [StudentDocuments::class, 'final_submission'])-
 
 
 //admin routes
-Route::get('/Admin-login', [AdminController::class, 'showLoginForm'])->name('admin.login');
-Route::post('/Admin-login', [AdminController::class, 'login']);
+Route::get('/Admin-login', [AdminAuth::class, 'showLoginForm'])->name('admin.login');
+Route::post('/Admin-login', [AdminAuth::class, 'login']);
 
 Route::middleware('auth:admin')->group(function () {
     Route::get('/Admin-dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    Route::post('/Admin-logout', [AdminController::class, 'logout'])->name('admin.logout');
+    Route::post('/Admin-logout', [AdminAuth::class, 'logout'])->name('admin.logout');
     Route::post('/Admin-getSubmittedFiles', [studentFilesController::class, 'getSubmittedFiles'])->name('admin.getSubmittedFiles');
     Route::post('/Admin-approve-Documents', [studentFilesController::class, 'approve_Documents'])->name('admin.approve-Documents');
     Route::post('/Admin-reject-documents', [studentFilesController::class, 'reject_documents'])->name('admin.reject-documents');
@@ -34,4 +35,6 @@ Route::middleware('auth:admin')->group(function () {
     Route::post('/Admin-Deassign-faculty', [AdminController::class, 'De_assign_faculty'])->name('admin.Deassign-faculty');
     Route::get('/admin-manage-students', [AdminController::class, 'manage_students'])->name('admin.manage-students');
     Route::post('/admin-view-students-documents', [AdminController::class, 'view_students_documents'])->name('admin.view-students-documents');
+    Route::get('/admin-show-change-password', [AdminAuth::class, 'show_change_password'])->name('admin.show-change-password');
+    Route::post('/admin-change-password', [AdminAuth::class, 'changePassword'])->name('admin.change-password');
 });
