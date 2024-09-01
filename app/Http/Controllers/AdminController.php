@@ -14,11 +14,12 @@ class AdminController extends Controller
     public function dashboard()
     {
         // Retrieve the logged-in admin user
+        $adminSuper = DB::table('admins')->where('id', '1')->value('id');
         $loggedInAdmin = Auth::guard('admin')->user();
         $recentlySubmitted = [];
 
         // Case 1: Super Admin - No Faculty or Department assigned
-        if ($loggedInAdmin->faculty_id == 0 && $loggedInAdmin->dept_id == 0) {
+        if ($adminSuper == $loggedInAdmin->id) {
             $recentlySubmitted = DB::table('document_status')
                 ->join('users', 'document_status.student_id', '=', 'users.id')
                 ->where('status', '1')
@@ -53,8 +54,8 @@ class AdminController extends Controller
             ->get();
 
         $staffs = DB::table('admins')
-            ->where('admins.dept_id', '!=', '0') // Specify the table explicitly
-            ->join('departments', 'admins.dept_id', '=', 'departments.dept_id')
+            ->where('admins.id', '!=', '1')
+            ->leftjoin('departments', 'admins.dept_id', '=', 'departments.dept_id')
             ->leftjoin('faculty', 'admins.faculty_id', '=', 'faculty.faculty_id')
             ->select('admins.*', 'departments.dept_title', 'faculty.faculty_code')
             ->get();
@@ -74,6 +75,7 @@ class AdminController extends Controller
                 'name' => $request->fullname,
                 'email' => $request->email,
                 'password' => Hash::make($request->phone),
+                'phone_no' => $request->phone,
                 'dept_id' => $request->dept,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -90,12 +92,54 @@ class AdminController extends Controller
             ->where('id', $request->staffId)
             ->update([
                 'faculty_id' => $request->faculty_id,
+                'dept_id' => '0',
                 'updated_at' => now(),
             ]);
 
         return response()->json(["status" => "successful"]);
     }
 
+
+    function delete_staff(Request $request)
+    {
+        DB::table('admins')
+            ->where('id', $request->staffId)
+            ->delete();
+
+        return response()->json(['status' => 'successful']);
+    }
+
+    public function edit_staff($id)
+    {
+        $staffRecords =  DB::table('admins')
+            ->where('id', $id)
+            ->first();
+
+        return response()->json($staffRecords);
+    }
+
+    public function update_staff(Request $request)
+    {
+
+        $staff = DB::table('admins')
+            ->where('id', $request->staff_id)
+            ->select('faculty_id')
+            ->first();
+
+        $newDeptId = is_null($staff->faculty_id) ?  $request->dept : 0;
+
+        DB::table('admins')
+            ->where('id', $request->staff_id)
+            ->update([
+                'name' => $request->fullname,
+                'email' => $request->email,
+                'phone_no' => $request->phone,
+                'password' => Hash::make($request->phone),
+                'dept_id' => $newDeptId,
+            ]);
+
+        return redirect()->back()->with('success', 'Staff Details Updated Successfully');
+    }
 
 
     public function De_assign_faculty(Request $request)
@@ -104,6 +148,7 @@ class AdminController extends Controller
             ->where('id', $request->staffId)
             ->update([
                 'faculty_id' => null,
+                'dept_id' => $request->deptId,
                 'updated_at' => now()
             ]);
 
@@ -111,12 +156,34 @@ class AdminController extends Controller
     }
 
 
+
+
     public function manage_students()
     {
-        $students = DB::table('users')
-            ->join('departments', 'users.dept_id', 'departments.dept_id')
-            ->select('users.*', 'departments.dept_title')
-            ->get();
+        $adminSuper = DB::table('admins')->where('id', '1')->value('id');
+        $loggedInAdminSuper = Auth::guard('admin')->user()->id;
+        $loggedInAdminFac =  Auth::guard('admin')->user()->faculty_id;
+        $loggedInAdminDept =  Auth::guard('admin')->user()->dept_id;
+
+        if ($adminSuper == $loggedInAdminSuper) {
+            $students = DB::table('users')
+                ->join('departments', 'users.dept_id', 'departments.dept_id')
+                ->select('users.*', 'departments.dept_title')
+                ->get();
+        } elseif ($loggedInAdminFac != null) {
+            $students = DB::table('users')
+                ->where('users.faculty_id', '=', $loggedInAdminFac)
+                ->join('departments', 'users.dept_id', 'departments.dept_id')
+                ->select('users.*', 'departments.dept_title')
+                ->get();
+        } else if ($loggedInAdminDept != null) {
+            $students = DB::table('users')
+                ->where('users.dept_id', '=', $loggedInAdminDept)
+                ->join('departments', 'users.dept_id', 'departments.dept_id')
+                ->select('users.*', 'departments.dept_title')
+                ->get();
+        }
+
 
         return view('admin.manageStudents', compact('students'));
     }

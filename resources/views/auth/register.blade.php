@@ -9,8 +9,8 @@
                     <div class="row no-gutters">
                         <div class="col-xl-12">
                             <div class="auth-form">
-                                <div class="text-center mb-3">
-                                    <a href="index.html"><img src="images/logo-full.png" alt=""></a>
+                                <div class="text-center ">
+                                    <img src="images/ibb-logo.png" alt="" style="width:5rem; height:5rem;">
                                 </div>
                                 <h4 class="text-center mb-4">Sign up your account</h4>
                                 <form method="POST" action="{{ route('register') }}">

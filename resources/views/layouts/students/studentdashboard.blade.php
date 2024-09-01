@@ -80,7 +80,7 @@
         ***********************************-->
         <div class="nav-header">
             <a href="/home" class="brand-logo">
-                <img src="images/ibb-logo.jpg" alt="" style="width:5rem; height:5rem;">
+                <img src="images/ibb-logo.png" alt="" style="width:5rem; height:5rem;">
             </a>
 
             <div class="nav-control">
@@ -126,69 +126,16 @@
                                                         <img alt="image" width="50" src="images/avatar/1.jpg">
                                                     </div>
                                                     <div class="media-body">
-                                                        <h6 class="mb-1">Dr sultads Send you Photo</h6>
-                                                        <small class="d-block">29 July 2020 - 02:26 PM</small>
+
+                                                        <h6 class="mb-1">{{$studentNotifications->comment}}</h6>
+                                                        <small class="d-block">{{$studentNotifications->updated_at}}</small>
                                                     </div>
                                                 </div>
                                             </li>
-                                            <li>
-                                                <div class="timeline-panel">
-                                                    <div class="media me-2 media-info">
-                                                        KG
-                                                    </div>
-                                                    <div class="media-body">
-                                                        <h6 class="mb-1">Resport created successfully</h6>
-                                                        <small class="d-block">29 July 2020 - 02:26 PM</small>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="timeline-panel">
-                                                    <div class="media me-2 media-success">
-                                                        <i class="fa fa-home"></i>
-                                                    </div>
-                                                    <div class="media-body">
-                                                        <h6 class="mb-1">Reminder : Treatment Time!</h6>
-                                                        <small class="d-block">29 July 2020 - 02:26 PM</small>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="timeline-panel">
-                                                    <div class="media me-2">
-                                                        <img alt="image" width="50" src="images/avatar/1.jpg">
-                                                    </div>
-                                                    <div class="media-body">
-                                                        <h6 class="mb-1">Dr sultads Send you Photo</h6>
-                                                        <small class="d-block">29 July 2020 - 02:26 PM</small>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="timeline-panel">
-                                                    <div class="media me-2 media-danger">
-                                                        KG
-                                                    </div>
-                                                    <div class="media-body">
-                                                        <h6 class="mb-1">Resport created successfully</h6>
-                                                        <small class="d-block">29 July 2020 - 02:26 PM</small>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="timeline-panel">
-                                                    <div class="media me-2 media-primary">
-                                                        <i class="fa fa-home"></i>
-                                                    </div>
-                                                    <div class="media-body">
-                                                        <h6 class="mb-1">Reminder : Treatment Time!</h6>
-                                                        <small class="d-block">29 July 2020 - 02:26 PM</small>
-                                                    </div>
-                                                </div>
-                                            </li>
+
+
                                         </ul>
                                     </div>
-                                    <a class="all-notification" href="javascript:;">See all notifications <i class="ti-arrow-right"></i></a>
                                 </div>
                             </li>
 
@@ -201,7 +148,7 @@
                             </li>
                             <li class="nav-item dropdown header-profile">
                                 <a class="nav-link" href="javascript:;" role="button" data-bs-toggle="dropdown">
-                                    <img src="images/profile/12.png" width="20" alt="">
+                                    <img src="{{ asset($profileImage) }}" width="20" alt="">
                                     <div class="header-info">
                                         <span>Hello,<strong> {{Auth::user()->name}}</strong></span>
                                     </div>
@@ -252,9 +199,20 @@
             <div class="deznav-scroll">
 
                 <div class="sidebar d-flex flex-column align-items-center">
-                    <img src="images/avatar/1.jpg" alt="Profile Picture" class="profile-pic">
-                    <h4 class="username">{{Auth::user()->name}}</h4>
-                    <p class="email">{{Auth::user()->matric_no}}</p>
+                    <img src="{{ asset($profileImage) }}" alt="Profile Picture" class="profile-pic">
+                    <p class="username">Name</p>
+                    <h4>{{Auth::user()->name}}</h4><br>
+                    <p class="email">Matric No</p>
+                    <h4>{{Auth::user()->matric_no}}</h4><br>
+                    <p>Department</p>
+                    <h4>{{$studentDept->dept_title}}</h4>
+                    <hr />
+                    <a class="" style="color: red;" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout
+                    </a>
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
 
                 </div>
 

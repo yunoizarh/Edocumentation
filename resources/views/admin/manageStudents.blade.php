@@ -10,6 +10,9 @@
 
 
 <div class="form-head d-flex mb-3 mb-md-4 align-items-start">
+    <div class="me-auto d-lg-block">
+        <h3>Manage Your Students</h3>
+    </div>
     <div class="input-group search-area ms-auto d-inline-flex me-2">
         <input type="text" class="form-control" placeholder="Search here">
 

@@ -37,4 +37,7 @@ Route::middleware('auth:admin')->group(function () {
     Route::post('/admin-view-students-documents', [AdminController::class, 'view_students_documents'])->name('admin.view-students-documents');
     Route::get('/admin-show-change-password', [AdminAuth::class, 'show_change_password'])->name('admin.show-change-password');
     Route::post('/admin-change-password', [AdminAuth::class, 'changePassword'])->name('admin.change-password');
+    Route::post('/admin-delete-staff', [AdminController::class, 'delete_staff'])->name('admin.delete-staff');
+    Route::get('/admin-edit-staff/{id}', [AdminController::class, 'edit_staff'])->name('admin.edit-staff');
+    Route::post('/admin-update-staff', [AdminController::class, 'update_staff'])->name('admin.update-staff');
 });

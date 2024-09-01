@@ -35,22 +35,21 @@
                             <div class="col-xl-12">
                                 <div class="auth-form">
                                     <div class="text-center mb-3">
-                                        <a href="index.html"><img src="images/logo-full.png" alt=""></a>
-                                    </div>
+                                        <img src="images/ibb-logo.png" alt="" style="width:7rem; height:7rem;">
 
-                                    @if(session('error'))
-                                    <div class="alert alert-danger" role="alert">
-                                        {{session('error')}}
                                     </div>
-                                    @endif
 
                                     <h4 class="text-center mb-4 fs-3">Welcome Admin</h4>
                                     <form action="{{ route('admin.login') }}" method="POST">
                                         @csrf
                                         <div class="form-group fs-5">
                                             <label class="form-label">Email</label>
-                                            <input type="email" name="email" class="form-control" placeholder="hello@gmail.com">
+                                            <input type="email" name="email" class="form-control" placeholder="hello@gmail.com" value="{{ old('email') }}">
+                                            @error('email')
+                                            <p style="color:red;">{{ $message }}</p>
+                                            @enderror
                                         </div>
+
                                         <label class="form-label fs-5">Password</label>
                                         <div class="mb-3 position-relative fs-5">
                                             <input type="password" name="password" id="dz-password" class="form-control" placeholder="123456">
@@ -58,6 +57,10 @@
                                                 <i class="fa fa-eye-slash"></i>
                                                 <i class="fa fa-eye"></i>
                                             </span>
+
+                                            @error('password')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                         <div class="text-center">
                                             <button type="submit" class="btn btn-primary btn-block">Sign Me In</button>

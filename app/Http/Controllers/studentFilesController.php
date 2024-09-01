@@ -23,7 +23,9 @@ class studentFilesController extends Controller
         DB::table('document_status')
             ->where('student_id', $request->student_id)
             ->update([
-                'status' => '2'
+                'status' => '2',
+                'comment' => 'Your documents has been approved successfully,Congratulations',
+                'updated_at' => now(),
             ]);
 
         return response()->json(["status" => "successful"]);

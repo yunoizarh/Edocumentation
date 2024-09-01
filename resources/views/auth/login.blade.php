@@ -10,21 +10,21 @@
                         <div class="col-xl-12">
                             <div class="auth-form">
                                 <div class="text-center mb-3">
-                                    <a href="index.html"><img src="images/logo-full.png" alt=""></a>
+                                    <a href="index.html"><img src="images/ibb-logo.png" alt="" width="120px" height="120px"></a>
                                 </div>
                                 <h4 class="text-center mb-4">Sign in your account</h4>
                                 <form method="POST" action="{{ route('login') }}">
                                     @csrf
                                     <div class="form-group">
-                                        <label class="form-label">Email</label>
-                                        <input id="email" type="email" placeholder="name@example.com" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                        @error('email')
+                                        <label for="matric_no">Matric Number</label>
+                                        <input id="matric_no" type="text" class="form-control @error('matric_no') is-invalid @enderror" name="matric_no" value="{{ old('matric_no') }}" placeholder="U19/FNS/CSC/1065" required autofocus>
+                                        @error('matric_no')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
                                     </div>
+
                                     <label class="form-label">Password</label>
                                     <div class="mb-3 position-relative">
                                         <input id="dz-password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="123456678" required autocomplete="current-password">
